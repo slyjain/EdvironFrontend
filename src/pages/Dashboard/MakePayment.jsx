@@ -47,20 +47,22 @@ const MakePayment = () => {
         // Send payment request to the backend
         try {
             const response = await axios.post(
-                "http://localhost:3000/payment/create-request", // Assuming backend endpoint for creating payment
+                "http://localhost:3000/payment/create-request",
                 {
                     school_id: schoolId,
                     amount: totalAmount.toString(),
                     months: months,
-                    //   callback_url: "http://localhost:3000/payment/callback" // Backend should handle JWT creation
+                    callback_url: "http://localhost:5173/dashboard/payment/callback",
                 },
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}` // Fetching token from localStorage and using it in Authorization header
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
             );
+
+
 
             const { collect_request_url } = response.data;
 

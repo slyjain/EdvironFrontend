@@ -3,7 +3,7 @@ import { Signin } from "./pages/Signin";
 import { Signup } from "./pages/Signup";
 import { PrivateRoute } from "./components/PrivateRoute";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
-
+import PaymentCallback from "./pages/Dashboard/PaymentCallback";
 import Profile from "./pages/Dashboard/Profile";
 import MakePayment from "./pages/Dashboard/MakePayment";
 import FeeUpdates from "./pages/Dashboard/FeeUpdates";
@@ -22,6 +22,7 @@ function App() {
             <Route path="payment" element={<MakePayment />} />
             <Route path="fees" element={<FeeUpdates />} />
             <Route path="orders" element={<AllOrders />} />
+            <Route path="payment/callback" element={<PaymentCallback />} />
           </Route>
         </Route>
 

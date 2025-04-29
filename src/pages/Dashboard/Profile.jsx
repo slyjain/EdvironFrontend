@@ -4,7 +4,7 @@ const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user) {
-    return <div>Loading...</div>; // Add a loading state in case the user data is not yet available
+    return <div>Loading...</div>;
   }
 
   const {
@@ -17,28 +17,29 @@ const Profile = () => {
     student_id,
     trustee_name,
     monthly_fees,
+    trustee,
   } = user;
+
+  const capitalizedRole = role ? role.charAt(0).toUpperCase() + role.slice(1) : "User";
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        {/* Profile Title */}
         <h2 className="text-3xl font-semibold text-gray-700 mb-6">User Profile</h2>
 
-        {/* Profile Header */}
+        {/* Header */}
         <div className="flex items-center space-x-4 mb-6">
           <div className="w-16 h-16 rounded-full bg-blue-500 text-white flex items-center justify-center text-2xl font-semibold">
-            {name.charAt(0).toUpperCase()}
+            {name?.[0]?.toUpperCase() || "U"}
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-800">{name}</h3>
-            <p className="text-gray-600">{role ? role.charAt(0).toUpperCase() + role.slice(1) : "User"}</p>
+            <h3 className="text-xl font-semibold text-gray-800">{name || "User"}</h3>
+            <p className="text-gray-600">{capitalizedRole}</p>
           </div>
         </div>
 
-        {/* Profile Information */}
+        {/* Info Section */}
         <div className="space-y-6">
-          {/* Basic Information */}
           <div className="flex justify-between border-b pb-4">
             <div className="text-gray-600">Email:</div>
             <div className="font-semibold text-gray-800">{email}</div>
@@ -46,7 +47,7 @@ const Profile = () => {
 
           {school_name && (
             <div className="flex justify-between border-b pb-4">
-              <div className="text-gray-600">School:</div>
+              <div className="text-gray-600">School Name:</div>
               <div className="font-semibold text-gray-800">{school_name}</div>
             </div>
           )}
@@ -69,6 +70,13 @@ const Profile = () => {
             <div className="flex justify-between border-b pb-4">
               <div className="text-gray-600">Monthly Fees:</div>
               <div className="font-semibold text-gray-800">${monthly_fees}</div>
+            </div>
+          )}
+
+          {role === "school" && trustee && (
+            <div className="flex justify-between border-b pb-4">
+              <div className="text-gray-600">Trustee Email:</div>
+              <div className="font-semibold text-gray-800">{trustee}</div>
             </div>
           )}
 
