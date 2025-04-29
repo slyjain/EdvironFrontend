@@ -8,6 +8,7 @@ import Profile from "./pages/Dashboard/Profile";
 import MakePayment from "./pages/Dashboard/MakePayment";
 import FeeUpdates from "./pages/Dashboard/FeeUpdates";
 import AllOrders from "./pages/Dashboard/AllOrders";
+import TransactionsTable from "./pages/Dashboard/TransactionsTable";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="fees" element={<FeeUpdates />} />
             <Route path="orders" element={<AllOrders />} />
             <Route path="payment/callback" element={<PaymentCallback />} />
+            <Route path="transactions" element={<TransactionsTable/>}/>
           </Route>
         </Route>
 

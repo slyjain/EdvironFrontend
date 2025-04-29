@@ -1,4 +1,3 @@
-// pages/Dashboard/PaymentCallback.jsx
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -13,16 +12,32 @@ const PaymentCallback = () => {
 
   useEffect(() => {
     const updateStatus = async () => {
-      console.log(collectRequestId, paymentStatus);
+      
+
+      // Safely get and parse user from localStorage
+      const userData = JSON.parse(localStorage.getItem("user") || "{}");
+      const school_id = userData?.school_id;
+      console.log(collectRequestId, paymentStatus,school_id);
+      if (!school_id) {
+        console.error("School ID not found in localStorage user data");
+        setStatus("INVALID");
+        setLoading(false);
+        return;
+      }
+
       try {
         await axios.post("http://localhost:3000/payment/update_collect_req", {
           EdvironCollectRequestId: collectRequestId,
           status: paymentStatus,
+          school_id,
         });
+
         console.log("Query Params:", {
           collectRequestId,
           paymentStatus,
+          school_id,
         });
+
         setStatus(paymentStatus);
       } catch (err) {
         console.error("Failed to update payment status", err);

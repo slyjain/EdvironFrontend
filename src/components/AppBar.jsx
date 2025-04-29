@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const AppBar = ({ role }) => {
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/signin");
@@ -12,7 +12,12 @@ const AppBar = ({ role }) => {
     { to: "/dashboard/profile", label: "Profile" },
     ...(role === "student" ? [{ to: "/dashboard/payment", label: "Make Payment" }] : []),
     ...(role === "trustee" ? [{ to: "/dashboard/fees", label: "Fee Updates" }] : []),
-    ...(role === "admin" ? [{ to: "/dashboard/orders", label: "All Orders" }] : []),
+    ...(role === "admin"
+      ? [
+          { to: "/dashboard/orders", label: "All Orders" },
+          { to: "/dashboard/transactions", label: "Transaction Table" },
+        ]
+      : []),
   ];
 
   return (
