@@ -1,12 +1,54 @@
-# React + Vite
+# Project Title
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A brief description of your project and its purpose.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Feature 1
+- Feature 2
+- Feature 3
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React.js / Next.js / Vite / etc.
+- Tailwind CSS / Styled Components / etc.
+- Other libraries (e.g., Axios, React Router)
+
+---
+
+## 📁 Project Structure
+├── App.css
+├── App.jsx
+├── assets
+│   ├── edviron.svg
+│   └── react.svg
+├── components
+│   ├── AppBar.jsx
+│   └── PrivateRoute.jsx
+├── data
+│   └── schools.js
+├── index.css
+├── main.jsx
+└── pages
+    ├── Dashboard
+    │   ├── AllOrders.jsx
+    │   ├── DashboardLayout.jsx
+    │   ├── FeeUpdates.jsx
+    │   ├── MakePayment.jsx
+    │   ├── PaymentCallback.jsx
+    │   ├── Profile.jsx
+    │   └── TransactionsTable.jsx
+    ├── Signin.jsx
+    └── Signup.jsx
+
+---
+
+## 🧑‍💻 Setup Instructions
+
+
+### Installation
+
+```bash
+git clone https://github.com/slyjain/EdvironFrontend.git .
+npm install
+npm run dev
