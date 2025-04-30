@@ -40,10 +40,6 @@
 ### 3. Profile Pages
 - **Student Profile**
   ![Student Profile](https://i.imgur.com/UntaWBR.png)
-- **Trustee Profile**
-  ![Trustee Profile](https://i.imgur.com/IhM0twV.png)
-- **Admin Profile**
-  ![Admin Profile](https://i.imgur.com/IhM0twV.png)
 
 ### 4. Make Payment Flow
 - **Before Payment**
