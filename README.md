@@ -23,6 +23,35 @@
   - View individual or aggregated data based on role.
 
 ---
+## Pages
+1. Signup page:
+ 1. Student
+ ![Student Signup Page](https://i.imgur.com/NjZZNM7.png)
+ 2. Trustee
+ ![Trustee Signup Page](https://i.imgur.com/mNXUZbb.png)
+ 3. Admin
+![Admin Signup Page](https://i.imgur.com/bgFp97m.png)
+    
+2. Signin page:
+![Sign in Page](https://i.imgur.com/2gN5dSZ.png)
+3. Profile Pages:
+    1. Student
+    ![Student Profile](https://i.imgur.com/UntaWBR.png)
+    2. Trustee
+    ![Project Structure](https://i.imgur.com/IhM0twV.png)
+    3. Admin
+    ![Project Structure](https://i.imgur.com/IhM0twV.png)
+4. Make Payment
+    1. Before payment 
+    ![Project Structure](https://i.imgur.com/cCS9V8G.png)
+    2. During payment
+    ![Project Structure](https://i.imgur.com/ZvDLiOv.png)
+    3. After Payment
+    ![Project Structure](https://i.imgur.com/IhM0twV.png)
+5. Trustee Fees Update Page
+    ![Project Structure](https://i.imgur.com/IhM0twV.png)
+6. Admin Fees Page
+    ![Project Structure](https://i.imgur.com/IhM0twV.png)
 
 ## 🛠️ Tech Stack
 
@@ -35,7 +64,7 @@
 ---
 
 ## 📁 Project Structure
-<pre lang="text"><code> 📦 EdvironFrontend ├── App.css ├── App.jsx ├── assets │ ├── edviron.svg │ └── react.svg ├── components │ ├── AppBar.jsx │ └── PrivateRoute.jsx ├── data │ └── schools.js ├── index.css ├── main.jsx └── pages ├── Dashboard │ ├── AllOrders.jsx │ ├── DashboardLayout.jsx │ ├── FeeUpdates.jsx │ ├── MakePayment.jsx │ ├── PaymentCallback.jsx │ ├── Profile.jsx │ └── TransactionsTable.jsx ├── Signin.jsx └── Signup.jsx </code></pre>
+![Project Structure](https://i.imgur.com/IhM0twV.png)
 
 ---
 

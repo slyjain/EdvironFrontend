@@ -56,7 +56,7 @@ const MakePayment = () => {
                     student_info: student,
                     amount: totalAmount.toString(),
                     months,
-                    callback_url: "http://localhost:5173/dashboard/payment/callback",
+                    callback_url: "https://edviron-frontend-zeta.vercel.app/dashboard/payment/callback",
                 },
                 {
                     headers: {
