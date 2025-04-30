@@ -26,7 +26,7 @@ const PaymentCallback = () => {
       }
 
       try {
-        await axios.post("http://localhost:3000/payment/update_collect_req", {
+        await axios.post("https://edvironbackend-iyr6.onrender.com/payment/update_collect_req", {
           EdvironCollectRequestId: collectRequestId,
           status: paymentStatus,
           school_id,

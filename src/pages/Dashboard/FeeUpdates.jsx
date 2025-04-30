@@ -22,7 +22,7 @@ const FeeUpdates = () => {
     const schoolId = user ? user._id : null;
     setError(null);
     try {
-      const res = await axios.get(`http://localhost:3000/payment/school/${schoolId}`, {
+      const res = await axios.get(`https://edvironbackend-iyr6.onrender.com/payment/school/${schoolId}`, {
         params: { page, limit, sort: sortField, order: sortOrder },
       });
       setTransactions(res.data);
@@ -213,7 +213,7 @@ const FeeUpdates = () => {
                 filteredTransactions.map((txn) => (
                   <tr
                     key={txn.collect_id}
-                    className="hover:bg-gray-50 transition-all duration-150"
+                    className="hover:bg-gray-50 transition-all duration-150 transform hover:scale-101"
                   >
                     <td className="px-6 py-3">{txn.collect_id}</td>
                     <td className="px-6 py-3">{txn.custom_order_id}</td>
@@ -229,6 +229,7 @@ const FeeUpdates = () => {
                 ))
               )}
             </tbody>
+
           </table>
         </div>
       )}

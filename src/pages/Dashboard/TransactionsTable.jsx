@@ -21,7 +21,7 @@ const TransactionsTable = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get('http://localhost:3000/payment/transactions', {
+      const res = await axios.get('https://edvironbackend-iyr6.onrender.com/payment/transactions', {
         params: { page, limit, sort: sortField, order: sortOrder },
       });
       setTransactions(res.data);

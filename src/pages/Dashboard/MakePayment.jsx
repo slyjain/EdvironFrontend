@@ -27,7 +27,7 @@ const MakePayment = () => {
         if (schoolId) {
             const fetchSchoolFee = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:3000/school/fee/${schoolId}`);
+                    const response = await axios.get(`https://edvironbackend-iyr6.onrender.com/school/fee/${schoolId}`);
                     setSchoolFee(response.data.fee);
                 } catch (err) {
                     console.error("Error fetching school fee:", err);
@@ -47,10 +47,10 @@ const MakePayment = () => {
 
     const handlePayClick = async () => {
         const token = localStorage.getItem("token");
-    
+
         try {
             const response = await axios.post(
-                "http://localhost:3000/payment/create-request",
+                "https://edvironbackend-iyr6.onrender.com/payment/create-request",
                 {
                     school_id: schoolId,
                     student_info: student,
@@ -65,21 +65,21 @@ const MakePayment = () => {
                     }
                 }
             );
-    
-            const { collect_request_url, collect_request_id} = response.data;
-    
+
+            const { collect_request_url, collect_request_id } = response.data;
+
             // Open payment in a new tab
             const paymentWindow = window.open(collect_request_url, "_blank");
-    
+
             // Poll focus to detect when the payment tab is closed
             const checkInterval = setInterval(async () => {
                 if (paymentWindow?.closed) {
                     clearInterval(checkInterval);
-    
+
                     try {
                         // Step 1: Update transaction status
                         const txStatus = await axios.get(
-                            `http://localhost:3000/payment/transaction-status/${collect_request_id}`,
+                            `https://edvironbackend-iyr6.onrender.com/payment/transaction-status/${collect_request_id}`,
                             {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
@@ -87,10 +87,10 @@ const MakePayment = () => {
                             }
                         );
                         console.log("Transaction status updated:", txStatus.data);
-    
+
                         // Step 2: Call check-status endpoint
                         const statusCheck = await axios.post(
-                            "http://localhost:3000/payment/check-status",
+                            "https://edvironbackend-iyr6.onrender.com/payment/check-status",
                             {
                                 collect_request_id,
                                 school_id: schoolId,
@@ -102,21 +102,21 @@ const MakePayment = () => {
                             }
                         );
                         console.log("Payment status checked:", statusCheck.data);
-    
+
                     } catch (err) {
                         console.error("Error checking/updating payment status:", err);
                     }
                 }
             }, 1000);
-    
+
         } catch (err) {
             console.error("Error creating payment request:", err);
         }
     };
-    
+
     const fetchTransactions = async (studentId) => {
         try {
-            const response = await axios.get(`http://localhost:3000/payment/transactions/${studentId}`);
+            const response = await axios.get(`https://edvironbackend-iyr6.onrender.com/payment/transactions/${studentId}`);
             setTransactions(response.data);
         } catch (error) {
             console.error("Error fetching transactions:", error);
@@ -188,6 +188,7 @@ const MakePayment = () => {
                                 </div>
                                 {/* <p className="text-gray-600 text-sm">Months: {txn.months}</p> */}
                                 <p className="text-gray-500 text-sm">
+                                    {console.log(txn.payment_time)}
                                     Date: {txn.payment_time ? format(new Date(txn.payment_time), 'dd MMM yyyy, HH:mm') : 'Invalid Date'}
                                 </p>
                             </li>
