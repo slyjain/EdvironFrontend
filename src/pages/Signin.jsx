@@ -21,7 +21,7 @@ export const Signin = () => {
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
-        navigate("/dashboard"); // or wherever you want after login
+        navigate("/dashboard/profile"); // or wherever you want after login
       } else {
         console.error("Signin failed:", response.data.message);
         alert(response.data.message);

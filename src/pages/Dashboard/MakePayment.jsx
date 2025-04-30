@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { format } from 'date-fns';
 
 const MakePayment = () => {
     const [months, setMonths] = useState(1);
@@ -7,6 +8,7 @@ const MakePayment = () => {
     const [student, setStudent] = useState(null);
     const [schoolFee, setSchoolFee] = useState(0);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -17,6 +19,7 @@ const MakePayment = () => {
                 name: user.name,
                 email: user.email,
             });
+            fetchTransactions(user._id);
         }
     }, []);
 
@@ -64,44 +67,92 @@ const MakePayment = () => {
             );
 
             const { collect_request_url } = response.data;
-            console.log(response.data);
             window.open(collect_request_url, "_blank");
         } catch (err) {
             console.error("Error creating payment request:", err);
         }
     };
 
+    const fetchTransactions = async (studentId) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/payment/transactions/${studentId}`);
+            setTransactions(response.data);
+        } catch (error) {
+            console.error("Error fetching transactions:", error);
+        }
+    };
+
+    const getStatusColor = (status) => {
+        switch (status.toLowerCase()) {
+            case 'success':
+                return 'bg-green-100 text-green-700';
+            case 'failed':
+                return 'bg-red-100 text-red-700';
+            case 'pending':
+                return 'bg-yellow-100 text-yellow-700';
+            default:
+                return 'bg-gray-100 text-gray-700';
+        }
+    };
+
     return (
-        <div className="p-6 bg-white shadow-md rounded-md max-w-md mx-auto mt-6">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Make Payment</h2>
+        <div className="p-6 bg-white shadow-md rounded-lg max-w-xl mx-auto mt-10">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Make a Payment</h2>
 
-            <div className="mb-4">
-                <label htmlFor="months" className="block text-gray-600">Select number of months:</label>
-                <select
-                    id="months"
-                    value={months}
-                    onChange={handleMonthChange}
-                    className="mt-2 w-full p-2 border rounded-md border-gray-300"
-                >
-                    {[...Array(12)].map((_, index) => (
-                        <option key={index} value={index + 1}>
-                            {index + 1} Month{index === 0 ? '' : 's'}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <div className="space-y-4 mb-6">
+                <div>
+                    <label htmlFor="months" className="block text-gray-700 font-medium mb-1">Select number of months:</label>
+                    <select
+                        id="months"
+                        value={months}
+                        onChange={handleMonthChange}
+                        className="w-full p-2 border rounded-md border-gray-300"
+                    >
+                        {[...Array(12)].map((_, index) => (
+                            <option key={index} value={index + 1}>
+                                {index + 1} Month{index === 0 ? '' : 's'}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className="mb-4">
-                <p className="text-gray-600">Fee per month: <span className="font-semibold">${schoolFee}</span></p>
-                <p className="text-gray-600">Total Amount: <span className="font-semibold">${totalAmount}</span></p>
+                <div className="text-gray-700 space-y-1">
+                    <p>Fee per month: <span className="font-semibold">${schoolFee}</span></p>
+                    <p>Total Amount: <span className="font-semibold text-blue-600">${totalAmount}</span></p>
+                </div>
             </div>
 
             <button
                 onClick={handlePayClick}
-                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
             >
                 Pay Now
             </button>
+
+            {/* Previous Transactions */}
+            <div className="mt-10">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-4">Previous Payments</h3>
+                {transactions.length === 0 ? (
+                    <p className="text-gray-500 italic">No payments found.</p>
+                ) : (
+                    <ul className="divide-y divide-gray-200">
+                        {transactions.map((txn) => (
+                            <li key={txn._id} className="py-4">
+                                <div className="flex justify-between items-center mb-1">
+                                    <p className="text-gray-800 font-medium">Amount: ${txn.amount}</p>
+                                    <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusColor(txn.status)}`}>
+                                        {txn.status}
+                                    </span>
+                                </div>
+                                {/* <p className="text-gray-600 text-sm">Months: {txn.months}</p> */}
+                                <p className="text-gray-500 text-sm">
+                                    Date: {txn.payment_time ? format(new Date(txn.payment_time), 'dd MMM yyyy, HH:mm') : 'Invalid Date'}
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };
