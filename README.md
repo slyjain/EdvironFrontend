@@ -1,6 +1,6 @@
 # 🎓 Edviron Frontend Assignment
 
-🌐 **Live Site**: [https://your-live-site-link.com](https://edviron-frontend-zeta.vercel.app/)
+🌐 **Live Site**: [https://edviron-frontend-zeta.vercel.app/](https://edviron-frontend-zeta.vercel.app/)
 > A responsive and user-friendly interface for the **School Payments and Dashboard** application. This platform allows students to pay school fees, trustees to monitor their respective school’s transactions, and admins to oversee all schools — ensuring secure, role-based, and organized management of education payments.
 
 ---
