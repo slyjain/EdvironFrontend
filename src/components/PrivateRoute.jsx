@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-// Check if the user has a valid JWT token
 export const PrivateRoute = () => {
-  const token = localStorage.getItem('token'); // Assuming you're storing the JWT token in localStorage
+  const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
 
   if (!token) {
     return <Navigate to="/signin" replace />;

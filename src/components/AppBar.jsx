@@ -12,12 +12,7 @@ const AppBar = ({ role }) => {
     { to: "/dashboard/profile", label: "Profile" },
     ...(role === "student" ? [{ to: "/dashboard/payment", label: "Make Payment" }] : []),
     ...(role === "trustee" ? [{ to: "/dashboard/fees", label: "Fee Updates" }] : []),
-    ...(role === "admin"
-      ? [
-          { to: "/dashboard/orders", label: "All Orders" },
-          { to: "/dashboard/transactions", label: "Transaction Table" },
-        ]
-      : []),
+    ...(role === "admin" ? [{ to: "/dashboard/transactions", label: "All Orders" }] : []),
   ];
 
   return (
