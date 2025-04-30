@@ -1,38 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 export const Signup = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState("");
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone_number, setPhone] = useState("");
-  const [school, setSchool] = useState("");
+  const [name, setName] = useState("");
+  const [schoolName, setSchoolName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [studentId, setStudentId] = useState("");
   const [monthlyFees, setMonthlyFees] = useState("");
-  const [schools, setSchools] = useState([]);
-
-  // Fetch school data from API
-  useEffect(() => {
-    const fetchSchools = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/school");
-        if (response.status === 200) {
-          const mappedSchools = response.data.map(s => ({
-            id: s._id,
-            name: s.school_name
-          }));
-          setSchools(mappedSchools);
-        } else {
-          console.error("Failed to fetch schools:", response.data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching schools:", error.message);
-      }
-    };
-    fetchSchools();
-  }, []);
 
   const handleSignup = async () => {
     if (!role || !email.trim() || !password.trim()) {
@@ -40,52 +19,35 @@ export const Signup = () => {
       return;
     }
 
-    let signupData;
+    const payload = {
+      role,
+      email: email.trim(),
+      password: password.trim(),
+    };
 
     if (role === "student") {
-      if (!name.trim() || !phone_number.trim() || !school?.id) {
-        alert("Please complete all student fields.");
+      if (!name || !schoolName || !phone || !studentId) {
+        alert("Please fill all student fields.");
         return;
       }
+      Object.assign(payload, { name, schoolName, phone, studentId });
+    }
 
-      signupData = {
-        role,
-        name: name.trim(),
-        email: email.trim(),
-        password: password.trim(),
-        phone_number: phone_number.trim(),
-        school_id: school.id,
-      };
-    } else if (role === "trustee") {
-      if (!name.trim() || !school.trim() || !monthlyFees.trim()) {
-        alert("Please complete all trustee fields.");
+    if (role === "trustee") {
+      if (!name || !schoolName || !monthlyFees) {
+        alert("Please fill all trustee fields.");
         return;
       }
-
-      signupData = {
-        role,
-        name: name.trim(),
-        email: email.trim(),
-        password: password.trim(),
-        school_name: school.trim(),
-        monthly_fees: monthlyFees.trim(),
-      };
-    } else {
-      signupData = {
-        role,
-        email: email.trim(),
-        password: password.trim(),
-      };
+      Object.assign(payload, { name, schoolName, monthlyFees });
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/signup", signupData);
-      if (response.status === 201 || response.status === 200) {
+      const response = await axios.post("http://localhost:3000/auth/signup", payload);
+      if (response.status === 201) {
         console.log("Signup successful");
-        navigate("/signin");
+        navigate("/dashboard");
       } else {
-        console.error("Signup failed:", response.data.message);
-        alert(response.data.message);
+        alert(response.data.message || "Signup failed.");
       }
     } catch (err) {
       console.error("Signup error:", err.response?.data?.message || err.message);
@@ -94,11 +56,11 @@ export const Signup = () => {
   };
 
   return (
-    <div className="bg-slate-300 h-screen flex justify-center">
+    <div className="bg-blue-200 h-screen flex justify-center">
       <div className="flex flex-col justify-center">
         <div className="rounded-lg bg-white w-80 text-center p-4 h-max">
           <Heading label="Sign up" />
-          <SubHeading label="Enter your information to create an account" />
+          <SubHeading label="Create your account by filling the information" />
 
           <div className="pt-4">
             <select
@@ -113,31 +75,25 @@ export const Signup = () => {
             </select>
           </div>
 
+          <InputBox label="Email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <InputBox label="Password" placeholder="••••••" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+          {(role === "student" || role === "trustee") && (
+            <>
+              <InputBox label={role === "student" ? "Student Name" : "Trustee Name"} placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
+              <InputBox label="School Name" placeholder="ABC High School" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} />
+            </>
+          )}
+
           {role === "student" && (
             <>
-              <InputBox label="Name" placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} />
-              <InputBox label="Email" placeholder="student@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <InputBox label="Password" placeholder="123456" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <SchoolSearch label="School" value={school} onChange={setSchool} schools={schools} />
-              <InputBox label="Phone Number" placeholder="Phone number" value={phone_number} onChange={(e) => setPhone(e.target.value)} />
+              <InputBox label="Phone Number" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <InputBox label="Student ID" placeholder="STD12345" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
             </>
           )}
 
           {role === "trustee" && (
-            <>
-              <InputBox label="Trustee Name" placeholder="Trustee Name" value={name} onChange={(e) => setName(e.target.value)} />
-              <InputBox label="Email" placeholder="trustee@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <InputBox label="Password" placeholder="123456" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <InputBox label="School Name" placeholder="Enter New School Name" value={school} onChange={(e) => setSchool(e.target.value)} />
-              <InputBox label="Monthly Fees" placeholder="Monthly Fees" value={monthlyFees} onChange={(e) => setMonthlyFees(e.target.value)} />
-            </>
-          )}
-
-          {role === "admin" && (
-            <>
-              <InputBox label="Email" placeholder="admin@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <InputBox label="Password" placeholder="123456" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </>
+            <InputBox label="Monthly Fees" placeholder="2000" type="number" value={monthlyFees} onChange={(e) => setMonthlyFees(e.target.value)} />
           )}
 
           <div className="pt-4">
@@ -151,8 +107,7 @@ export const Signup = () => {
   );
 };
 
-// --- Components ---
-
+// Reuse shared UI components from Signin
 function Heading({ label }) {
   return <div className="font-bold text-4xl pt-6">{label}</div>;
 }
@@ -195,43 +150,6 @@ function BottomWarning({ label, buttonText, to }) {
       <Link className="pointer underline pl-1 cursor-pointer" to={to}>
         {buttonText}
       </Link>
-    </div>
-  );
-}
-
-function SchoolSearch({ label, value, onChange, schools }) {
-  const [inputValue, setInputValue] = useState("");
-
-  const filteredSchools = schools.filter((school) =>
-    school.name.toLowerCase().includes(inputValue.toLowerCase())
-  );
-
-  return (
-    <div className="pt-2">
-      <div className="text-sm font-medium text-left py-1">{label}</div>
-      <input
-        type="text"
-        placeholder="Search School..."
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        className="w-full px-2 py-1 border rounded border-slate-200"
-      />
-      {filteredSchools.length > 0 && (
-        <div className="border rounded bg-white mt-1 max-h-40 overflow-y-auto">
-          {filteredSchools.map((school) => (
-            <div
-              key={school.id}
-              onClick={() => {
-                onChange(school);
-                setInputValue(school.name);
-              }}
-              className="p-2 hover:bg-slate-100 cursor-pointer text-left"
-            >
-              {school.name}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

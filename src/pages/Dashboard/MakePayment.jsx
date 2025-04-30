@@ -47,7 +47,7 @@ const MakePayment = () => {
 
     const handlePayClick = async () => {
         const token = localStorage.getItem("token");
-
+    
         try {
             const response = await axios.post(
                 "http://localhost:3000/payment/create-request",
@@ -65,14 +65,55 @@ const MakePayment = () => {
                     }
                 }
             );
-
-            const { collect_request_url } = response.data;
-            window.open(collect_request_url, "_blank");
+    
+            const { collect_request_url, collect_request_id} = response.data;
+    
+            // Open payment in a new tab
+            const paymentWindow = window.open(collect_request_url, "_blank");
+    
+            // Poll focus to detect when the payment tab is closed
+            const checkInterval = setInterval(async () => {
+                if (paymentWindow?.closed) {
+                    clearInterval(checkInterval);
+    
+                    try {
+                        // Step 1: Update transaction status
+                        const txStatus = await axios.get(
+                            `http://localhost:3000/payment/transaction-status/${collect_request_id}`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
+                            }
+                        );
+                        console.log("Transaction status updated:", txStatus.data);
+    
+                        // Step 2: Call check-status endpoint
+                        const statusCheck = await axios.post(
+                            "http://localhost:3000/payment/check-status",
+                            {
+                                collect_request_id,
+                                school_id: schoolId,
+                            },
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
+                            }
+                        );
+                        console.log("Payment status checked:", statusCheck.data);
+    
+                    } catch (err) {
+                        console.error("Error checking/updating payment status:", err);
+                    }
+                }
+            }, 1000);
+    
         } catch (err) {
             console.error("Error creating payment request:", err);
         }
     };
-
+    
     const fetchTransactions = async (studentId) => {
         try {
             const response = await axios.get(`http://localhost:3000/payment/transactions/${studentId}`);
@@ -117,8 +158,8 @@ const MakePayment = () => {
                 </div>
 
                 <div className="text-gray-700 space-y-1">
-                    <p>Fee per month: <span className="font-semibold">${schoolFee}</span></p>
-                    <p>Total Amount: <span className="font-semibold text-blue-600">${totalAmount}</span></p>
+                    <p>Fee per month: <span className="font-semibold">₹{schoolFee}</span></p>
+                    <p>Total Amount: <span className="font-semibold text-blue-600">₹{totalAmount}</span></p>
                 </div>
             </div>
 
@@ -138,8 +179,9 @@ const MakePayment = () => {
                     <ul className="divide-y divide-gray-200">
                         {transactions.map((txn) => (
                             <li key={txn._id} className="py-4">
+                                {console.log(txn)}
                                 <div className="flex justify-between items-center mb-1">
-                                    <p className="text-gray-800 font-medium">Amount: ${txn.amount}</p>
+                                    <p className="text-gray-800 font-medium">Amount: ₹{txn.amount}</p>
                                     <span className={`px-2 py-1 rounded text-sm font-medium ${getStatusColor(txn.status)}`}>
                                         {txn.status}
                                     </span>

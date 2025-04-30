@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const Signin = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState(""); // student, trustee, admin
+  const [role, setRole] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,11 +17,11 @@ export const Signin = () => {
       if (response.status === 201) {
         console.log("Signin successful");
 
-        // Store JWT token and user data in localStorage
+        
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
-        navigate("/dashboard/profile"); // or wherever you want after login
+        navigate("/dashboard/profile"); 
       } else {
         console.error("Signin failed:", response.data.message);
         alert(response.data.message);
@@ -33,7 +33,7 @@ export const Signin = () => {
   };
 
   return (
-    <div className="bg-slate-300 h-screen flex justify-center">
+    <div className="bg-blue-200 h-screen flex justify-center">
       <div className="flex flex-col justify-center">
         <div className="rounded-lg bg-white w-80 text-center p-4 h-max">
           <Heading label="Sign in" />

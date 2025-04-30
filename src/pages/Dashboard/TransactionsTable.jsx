@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 const TransactionsTable = () => {
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 1000;
   const [sortField, setSortField] = useState('payment_time');
   const [sortOrder, setSortOrder] = useState('desc');
   const [loading, setLoading] = useState(false);

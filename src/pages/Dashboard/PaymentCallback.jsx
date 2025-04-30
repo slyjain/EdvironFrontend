@@ -14,7 +14,7 @@ const PaymentCallback = () => {
     const updateStatus = async () => {
       
 
-      // Safely get and parse user from localStorage
+      
       const userData = JSON.parse(localStorage.getItem("user") || "{}");
       const school_id = userData?.school_id;
       console.log(collectRequestId, paymentStatus,school_id);

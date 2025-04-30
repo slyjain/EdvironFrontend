@@ -58,7 +58,7 @@ const Profile = () => {
   );
 };
 
-// Reusable info row component
+
 const InfoRow = ({ label, value }) => (
   <div className="flex justify-between items-center border-b pb-2">
     <span className="text-gray-600">{label}:</span>
