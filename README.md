@@ -95,8 +95,9 @@
     ├── Signin.jsx
     └── Signup.jsx
 
+```
 
-## 🧑‍💻 Setup Instructions
+##  🧑‍💻 Setup Instructions
 
 ```bash
 git clone https://github.com/slyjain/EdvironFrontend.git
